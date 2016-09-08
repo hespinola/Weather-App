@@ -23,9 +23,9 @@ class WeatherCell: UITableViewCell {
     
     func updateUI() {
         self.dayLabel.text = self.forecast.date
-        self.weatherImage.image = UIImage(named: self.forecast.weatherType)
-        self.minTemp.text = "\(self.forecast.minTemp)"
-        self.maxTemp.text = "\(self.forecast.maxTemp)"
+        self.weatherImage.image = UIImage(named: "\(self.forecast.weatherType) Mini")
+        self.minTemp.text = "\(Int(self.forecast.minTemp.rounded())) ºC"
+        self.maxTemp.text = "\(Int(self.forecast.maxTemp.rounded())) ºC"
     }
 
 }
