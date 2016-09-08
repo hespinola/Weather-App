@@ -7,9 +7,10 @@
 //
 
 import UIKit
+import CoreLocation
 import Alamofire
 
-class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource, CLLocationManagerDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var cityLbl: UILabel!
@@ -19,6 +20,8 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var todayTemp: UILabel!
     
     var forecasts = [Forecast]()
+    var locationManager = CLLocationManager()
+    var currentLocation: CLLocation!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,17 +29,41 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         tableView.delegate = self
         tableView.dataSource = self
         
-        downloadForecast {
-            // Update today
-            self.todayLbl.text = "Today, \(self.forecasts[0].date)"
-            self.todayWeather.image = UIImage(named: "\(self.forecasts[0].weatherType)")
-            self.todayWeatherLbl.text = self.forecasts[0].weatherType
-            self.todayTemp.text = "\(self.forecasts[0].temp) ºC"
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startMonitoringSignificantLocationChanges()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        locationAuthStatus()
+    }
+    
+    func locationAuthStatus() {
+        if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
+            currentLocation = locationManager.location
+            Location.sharedInstance.latitude = currentLocation.coordinate.latitude
+            Location.sharedInstance.longitude = currentLocation.coordinate.longitude
             
-            self.forecasts.remove(at: 0)
-            self.tableView.reloadData()
+            // Download Forecast
+            downloadForecast {
+                // Update today
+                self.todayLbl.text = "Today, \(self.forecasts[0].date)"
+                self.todayWeather.image = UIImage(named: "\(self.forecasts[0].weatherType)")
+                self.todayWeatherLbl.text = self.forecasts[0].weatherType
+                self.todayTemp.text = "\(self.forecasts[0].temp) ºC"
+                
+                self.forecasts.remove(at: 0)
+                self.tableView.reloadData()
+            }
+            
+        } else {
+            locationManager.requestWhenInUseAuthorization()
+            locationAuthStatus()
         }
     }
+    
     
     func downloadForecast(completed: downloadCompleted) {
         Alamofire.request(WEATHER_URL, method: .get).responseJSON(completionHandler: { (response) in
