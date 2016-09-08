@@ -19,7 +19,6 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         tableView.delegate = self
         tableView.dataSource = self
-        makeRequest()
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {

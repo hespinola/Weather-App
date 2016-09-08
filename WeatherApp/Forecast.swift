@@ -9,10 +9,10 @@
 import Foundation
 
 class Forecast {
-    private var _date: String!
-    private var _temp: Double!
-    private var _minTemp: Double!
-    private var _maxTemp: Double!
+    fileprivate var _date: String!
+    fileprivate var _temp: Double!
+    fileprivate var _minTemp: Double!
+    fileprivate var _maxTemp: Double!
     
     var date: String {
         get {
@@ -49,5 +49,7 @@ class Forecast {
             _maxTemp = newValue
         }
     }
+    
+    
 
 }
