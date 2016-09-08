@@ -23,36 +23,44 @@
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="iH9-9G-1DN">
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Karlstad, Sweden" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8hT-K7-7YD">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8hT-K7-7YD">
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="50" id="MOs-x1-AGD"/>
+                                                    <constraint firstAttribute="width" constant="250" id="ogj-NY-H5g"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="28"/>
                                                 <color key="textColor" red="0.4331259341" green="0.4129426618" blue="0.43623798079999998" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Today" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EEU-uM-Pmg">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EEU-uM-Pmg">
                                                 <constraints>
+                                                    <constraint firstAttribute="width" constant="250" id="bkm-tq-aP0"/>
                                                     <constraint firstAttribute="height" constant="25" id="fps-42-tcn"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="15"/>
                                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Cloudy" translatesAutoresizingMaskIntoConstraints="NO" id="GIf-8y-hT5">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="GIf-8y-hT5">
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="140" id="ShJ-eb-4N6"/>
                                                     <constraint firstAttribute="width" constant="140" id="fmh-tc-Vgy"/>
                                                 </constraints>
                                             </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Cloudy" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LSG-xn-JLV">
-                                                <frame key="frameInset" minX="84" minY="215" width="48" height="51"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LSG-xn-JLV">
+                                                <frame key="frameInset" minX="50" minY="215" width="150"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="150" id="TD1-0w-FLS"/>
+                                                </constraints>
                                                 <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="15"/>
                                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="25º C" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ohp-rR-e6g">
-                                                <frame key="frameInset" minX="59" minY="266" width="98" height="52"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ohp-rR-e6g">
+                                                <frame key="frameInset" minY="215" width="250" height="103"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="250" id="RP5-Vo-4DO"/>
+                                                </constraints>
                                                 <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="38"/>
                                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
@@ -134,7 +142,12 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="cityLbl" destination="8hT-K7-7YD" id="wbV-G0-68J"/>
                         <outlet property="tableView" destination="xLP-uj-R1V" id="2si-Lw-Rgu"/>
+                        <outlet property="todayLbl" destination="EEU-uM-Pmg" id="gZo-ob-pX9"/>
+                        <outlet property="todayTemp" destination="Ohp-rR-e6g" id="97M-Qs-zlr"/>
+                        <outlet property="todayWeather" destination="GIf-8y-hT5" id="b0Q-W0-Gdh"/>
+                        <outlet property="todayWeatherLbl" destination="LSG-xn-JLV" id="URm-eT-1VK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -143,7 +156,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Cloudy" width="92" height="68"/>
         <image name="Cloudy Mini" width="34" height="25"/>
     </resources>
 </document>
