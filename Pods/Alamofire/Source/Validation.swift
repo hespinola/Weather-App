@@ -28,7 +28,7 @@ extension Request {
 
     // MARK: Helper Types
 
-    fileprivate typealias ErrorReason = AFError.ValidationFailureReason
+    fileprivate typealias ErrorReason = AFError.ResponseValidationFailureReason
 
     /// Used to represent whether validation was successful or encountered an error resulting in a failure.
     ///
@@ -141,7 +141,7 @@ extension Request {
 
             return AFError.responseValidationFailed(reason: reason)
         }()
-        
+
         return .failure(error)
     }
 }
@@ -161,7 +161,7 @@ extension DataRequest {
     ///
     /// - returns: The request.
     @discardableResult
-    public func validate(_ validation: Validation) -> Self {
+    public func validate(_ validation: @escaping Validation) -> Self {
         let validationExecution: () -> Void = {
             if
                 let response = self.response,
@@ -220,9 +220,14 @@ extension DataRequest {
 // MARK: -
 
 extension DownloadRequest {
-    /// A closure used to validate a request that takes a URL request, a URL response, a temporary URL and a 
+    /// A closure used to validate a request that takes a URL request, a URL response, a temporary URL and a
     /// destination URL, and returns whether the request was valid.
-    public typealias Validation = (_ request: URLRequest?, _ response: HTTPURLResponse, _ temporary: URL?, _ destination: URL?) -> ValidationResult
+    public typealias Validation = (
+        _ request: URLRequest?,
+        _ response: HTTPURLResponse,
+        _ temporaryURL: URL?,
+        _ destinationURL: URL?)
+        -> ValidationResult
 
     /// Validates the request, using the specified closure.
     ///
@@ -232,7 +237,7 @@ extension DownloadRequest {
     ///
     /// - returns: The request.
     @discardableResult
-    public func validate(_ validation: Validation) -> Self {
+    public func validate(_ validation: @escaping Validation) -> Self {
         let validationExecution: () -> Void = {
             let request = self.request
             let temporaryURL = self.downloadDelegate.temporaryURL

@@ -65,7 +65,7 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource, CLLo
     }
     
     
-    func downloadForecast(completed: downloadCompleted) {
+    func downloadForecast(completed: @escaping downloadCompleted) {
         Alamofire.request(WEATHER_URL, method: .get).responseJSON(completionHandler: { (response) in
             
             if let dict = response.result.value as? Dictionary<String, AnyObject> {

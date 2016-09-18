@@ -97,12 +97,14 @@ extension DataRequest {
     public func response(queue: DispatchQueue? = nil, completionHandler: @escaping (DefaultDataResponse) -> Void) -> Self {
         delegate.queue.addOperation {
             (queue ?? DispatchQueue.main).async {
-                let dataResponse = DefaultDataResponse(
+                var dataResponse = DefaultDataResponse(
                     request: self.request,
                     response: self.response,
                     data: self.delegate.data,
                     error: self.delegate.error
                 )
+
+                dataResponse.add(self.delegate.metrics)
 
                 completionHandler(dataResponse)
             }
@@ -144,7 +146,7 @@ extension DataRequest {
                 serializationCompletedTime: CFAbsoluteTimeGetCurrent()
             )
 
-            let response = DataResponse<T.SerializedObject>(
+            var dataResponse = DataResponse<T.SerializedObject>(
                 request: self.request,
                 response: self.response,
                 data: self.delegate.data,
@@ -152,7 +154,9 @@ extension DataRequest {
                 timeline: timeline
             )
 
-            (queue ?? DispatchQueue.main).async { completionHandler(response) }
+            dataResponse.add(self.delegate.metrics)
+
+            (queue ?? DispatchQueue.main).async { completionHandler(dataResponse) }
         }
 
         return self
@@ -174,7 +178,7 @@ extension DownloadRequest {
     {
         delegate.queue.addOperation {
             (queue ?? DispatchQueue.main).async {
-                let downloadResponse = DefaultDownloadResponse(
+                var downloadResponse = DefaultDownloadResponse(
                     request: self.request,
                     response: self.response,
                     temporaryURL: self.downloadDelegate.temporaryURL,
@@ -182,6 +186,8 @@ extension DownloadRequest {
                     resumeData: self.downloadDelegate.resumeData,
                     error: self.downloadDelegate.error
                 )
+
+                downloadResponse.add(self.delegate.metrics)
 
                 completionHandler(downloadResponse)
             }
@@ -223,7 +229,7 @@ extension DownloadRequest {
                 serializationCompletedTime: CFAbsoluteTimeGetCurrent()
             )
 
-            let response = DownloadResponse<T.SerializedObject>(
+            var downloadResponse = DownloadResponse<T.SerializedObject>(
                 request: self.request,
                 response: self.response,
                 temporaryURL: self.downloadDelegate.temporaryURL,
@@ -233,7 +239,9 @@ extension DownloadRequest {
                 timeline: timeline
             )
 
-            (queue ?? DispatchQueue.main).async { completionHandler(response) }
+            downloadResponse.add(self.delegate.metrics)
+
+            (queue ?? DispatchQueue.main).async { completionHandler(downloadResponse) }
         }
 
         return self
@@ -378,7 +386,7 @@ extension Request {
 }
 
 extension DataRequest {
-    /// Creates a response serializer that returns a result string type initialized from the response data with 
+    /// Creates a response serializer that returns a result string type initialized from the response data with
     /// the specified string encoding.
     ///
     /// - parameter encoding: The string encoding. If `nil`, the string encoding will be determined from the server
@@ -465,7 +473,7 @@ extension DownloadRequest {
 // MARK: - JSON
 
 extension Request {
-    /// Returns a JSON object contained in a result type constructed from the response data using `JSONSerialization` 
+    /// Returns a JSON object contained in a result type constructed from the response data using `JSONSerialization`
     /// with the specified reading options.
     ///
     /// - parameter options:  The JSON serialization reading options. Defaults to `.allowFragments`.
@@ -586,7 +594,7 @@ extension DownloadRequest {
 // MARK: - Property List
 
 extension Request {
-    /// Returns a plist object contained in a result type constructed from the response data using 
+    /// Returns a plist object contained in a result type constructed from the response data using
     /// `PropertyListSerialization` with the specified reading options.
     ///
     /// - parameter options:  The property list reading options. Defaults to `[]`.
