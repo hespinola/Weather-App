@@ -12,8 +12,8 @@ class WeatherCell: UITableViewCell {
     
     @IBOutlet weak var dayLabel: UILabel!
     @IBOutlet weak var weatherImage: UIImageView!
-    @IBOutlet weak var maxTemp: UILabel!
-    @IBOutlet weak var minTemp: UILabel!
+    @IBOutlet weak var maxTempLabel: UILabel!
+    @IBOutlet weak var minTempLabel: UILabel!
     
     var forecast: Forecast!
 
@@ -21,11 +21,16 @@ class WeatherCell: UITableViewCell {
         super.awakeFromNib()
     }
     
-    func updateUI() {
-        self.dayLabel.text = self.forecast.date
-        self.weatherImage.image = UIImage(named: "\(self.forecast.weatherType) Mini")
-        self.minTemp.text = "\(Int(self.forecast.minTemp.rounded())) ºC"
-        self.maxTemp.text = "\(Int(self.forecast.maxTemp.rounded())) ºC"
+    // Configure Cell
+    func configureCell(forecast: Forecast) {
+        dayLabel.text = forecast.date
+        minTempLabel.text = "\(Int(forecast.formattedMinTemp)) ºC"
+        maxTempLabel.text = "\(Int(forecast.formattedMaxTemp)) ºC"
+        
+        if let image = UIImage(named: "\(forecast.weatherType) Mini") {
+            weatherImage.image = image
+        } else {
+            weatherImage.image = UIImage(named: "Clear Mini")
+        }
     }
-
 }

@@ -1,5 +1,5 @@
 //
-//  MainVC.swift
+//  MainViewController.swift
 //  WeatherApp
 //
 //  Created by Isomi on 9/2/16.
@@ -10,8 +10,9 @@ import UIKit
 import CoreLocation
 import Alamofire
 
-class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource, CLLocationManagerDelegate {
+class MainViewController: UIViewController, CLLocationManagerDelegate {
 
+    // MARK: - UI Elements
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var cityLbl: UILabel!
     @IBOutlet weak var todayLbl: UILabel!
@@ -19,10 +20,12 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource, CLLo
     @IBOutlet weak var todayWeatherLbl: UILabel!
     @IBOutlet weak var todayTemp: UILabel!
     
-    var forecasts = [Forecast]()
-    var locationManager = CLLocationManager()
-    var currentLocation: CLLocation!
+    // MARK: - Class Properties
+    fileprivate var forecasts = [Forecast]()
+    private var locationManager = CLLocationManager()
+    private var currentLocation: CLLocation!
     
+    // MARK: - View Controller Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -40,6 +43,7 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource, CLLo
         locationAuthStatus()
     }
     
+    // MARK: - Class Methods
     func locationAuthStatus() {
         if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
             currentLocation = locationManager.location
@@ -82,32 +86,7 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource, CLLo
                 if let list = dict["list"] as? [Dictionary<String, AnyObject>] {
                     
                     for day in list {
-                        let forecast = Forecast()
-                        
-                        if let date = day["dt"] as? Double {
-                            forecast.date = "\(date)"
-                        }
-                        
-                        if let temp = day["temp"] as? Dictionary<String, AnyObject> {
-                            if let min = temp["min"] as? Double {
-                                forecast.minTemp = min
-                            }
-                            
-                            if let max = temp["max"] as? Double {
-                                forecast.maxTemp = max
-                            }
-                            
-                            if let newTemp = temp["day"] as? Double {
-                                forecast.temp = newTemp
-                            }
-                        }
-                        
-                        if let weather = day["weather"] as? [Dictionary<String, AnyObject>] {
-                            if let weatherType = weather[0]["main"] as? String {
-                                forecast.weatherType = weatherType
-                            }
-                        }
-                        
+                        let forecast = Forecast(day)
                         self.forecasts.append(forecast)
                     }
                 }
@@ -115,6 +94,11 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource, CLLo
             completed()
         })
     }
+}
+
+
+// MARK: - Table View Delegate and Data Source
+extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -125,6 +109,11 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource, CLLo
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "WeatherCell") as? WeatherCell else { fatalError("Wrong cell.") }
+        
+        
+        
         if let cell = tableView.dequeueReusableCell(withIdentifier: "WeatherCell") as? WeatherCell {
             
             cell.forecast = forecasts[indexPath.row]
@@ -135,8 +124,4 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource, CLLo
             return UITableViewCell()
         }
     }
-    
-    
-
 }
-
