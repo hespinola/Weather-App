@@ -41,6 +41,7 @@ class MainViewController: UIViewController, CLLocationManagerDelegate {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         locationAuthStatus()
+        print("ALEX: \(WEATHER_URL)")
     }
     
     // MARK: - Class Methods
@@ -53,7 +54,7 @@ class MainViewController: UIViewController, CLLocationManagerDelegate {
             // Download Forecast
             downloadForecast {
                 // Update today
-                self.todayLbl.text = "Today, \(self.forecasts[0].date)"
+                self.todayLbl.text = "Today, \(self.forecasts[0].day)"
                 self.todayWeather.image = UIImage(named: "\(self.forecasts[0].weatherType)")
                 self.todayWeatherLbl.text = self.forecasts[0].weatherType
                 self.todayTemp.text = "\(self.forecasts[0].temp) ºC"
@@ -69,7 +70,7 @@ class MainViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     
-    func downloadForecast(completed: @escaping downloadCompleted) {
+    func downloadForecast(completed: @escaping() -> Void) {
         Alamofire.request(WEATHER_URL, method: .get).responseJSON(completionHandler: { (response) in
             
             if let dict = response.result.value as? Dictionary<String, AnyObject> {
@@ -86,7 +87,7 @@ class MainViewController: UIViewController, CLLocationManagerDelegate {
                 if let list = dict["list"] as? [Dictionary<String, AnyObject>] {
                     
                     for day in list {
-                        let forecast = Forecast(day)
+                        let forecast = Forecast(data: day)
                         self.forecasts.append(forecast)
                     }
                 }
@@ -112,16 +113,9 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "WeatherCell") as? WeatherCell else { fatalError("Wrong cell.") }
         
+        cell.configureCell(forecast: forecasts[indexPath.row])
+        return cell
         
         
-        if let cell = tableView.dequeueReusableCell(withIdentifier: "WeatherCell") as? WeatherCell {
-            
-            cell.forecast = forecasts[indexPath.row]
-            cell.updateUI()
-            return cell
-            
-        } else {
-            return UITableViewCell()
-        }
     }
 }

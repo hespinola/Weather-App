@@ -42,12 +42,12 @@ class Forecast {
         return _maxTemp
     }
     
-    var formattedMinTemp: Double {
-        return _minTemp.rounded()
+    var formattedMinTemp: String {
+        return "\(Int(minTemp.rounded())) ºC"
     }
     
-    var formattedMaxTemp: Double {
-        return _maxTemp.rounded()
+    var formattedMaxTemp: String {
+        return "\(Int(maxTemp.rounded())) ºC"
     }
     
     // MARK: - Class Methods
@@ -61,7 +61,7 @@ class Forecast {
             _day = dateFormatter.string(from: Date(timeIntervalSince1970: Double(dt)))
             
             dateFormatter.dateStyle = .short
-            dateFormatter.dateFormat = "dd/MM/yyyy"
+            dateFormatter.dateFormat = "dd/MM/yy"
             _date = dateFormatter.string(from: Date(timeIntervalSince1970: Double(dt)))
             
         } else {
@@ -79,16 +79,17 @@ class Forecast {
         }
         
         if let tempData = data["temp"] as? Dictionary<String, AnyObject> {
+            
             if let min = tempData["min"] as? Double {
-                _minTemp = min
+                _minTemp = fromKelvinToCelsius(temp: min)
             }
             
             if let max = tempData["max"] as? Double {
-                _maxTemp = max
+                _maxTemp = fromKelvinToCelsius(temp: max)
             }
             
             if let newTemp = tempData["day"] as? Double {
-                _temp = newTemp
+                _temp = fromKelvinToCelsius(temp: newTemp)
             }
             
         } else {

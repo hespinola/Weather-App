@@ -10,22 +10,19 @@ import UIKit
 
 class WeatherCell: UITableViewCell {
     
+    // MARK: - UI Elements
     @IBOutlet weak var dayLabel: UILabel!
+    @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var weatherImage: UIImageView!
     @IBOutlet weak var maxTempLabel: UILabel!
     @IBOutlet weak var minTempLabel: UILabel!
     
-    var forecast: Forecast!
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-    }
-    
     // Configure Cell
     func configureCell(forecast: Forecast) {
-        dayLabel.text = forecast.date
-        minTempLabel.text = "\(Int(forecast.formattedMinTemp)) ºC"
-        maxTempLabel.text = "\(Int(forecast.formattedMaxTemp)) ºC"
+        dayLabel.text = forecast.day
+        dateLabel.text = forecast.date
+        minTempLabel.text = "Min: " + forecast.formattedMinTemp
+        maxTempLabel.text = "Max: " + forecast.formattedMaxTemp
         
         if let image = UIImage(named: "\(forecast.weatherType) Mini") {
             weatherImage.image = image
